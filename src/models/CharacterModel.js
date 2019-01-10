@@ -14,7 +14,26 @@ export const list = () => {
 export const get = (id) => {
   return knex
     .from('character')
-    .where('id', id);
+    .where('id', id).then(([rows]) => rows);
+};
+
+export const getCharactByMovieId = (idMovie) => {
+  return knex
+    .from('character')
+    .where('idMovie', idMovie);
+};
+
+export const getCharactByActorId = (idActor) => {
+  return knex
+    .from('character')
+    .where('idActor', idActor);
+};
+
+export const getIdMovieByActorId = (idActor) => {
+  return knex
+    .from('character')
+    .select('idMovie')
+    .where('idActor', idActor);
 };
 
 export const update = (data) => {

@@ -36,13 +36,11 @@ class Logger {
   }
 
   static throw(res, code, ...args) {
-    
-    console.log(code);
+    console.log('code: ', code);
+    console.log('args: ', args);
     this.error(...args);
     res.status(500).send({ success: false, code, message: 'Falha interna do servidor' });
   }
-
-  
 }
 
 module.exports = Logger;

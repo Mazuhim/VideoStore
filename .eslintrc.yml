@@ -1,0 +1,13 @@
+extends: airbnb-base
+plugins:
+  - import
+rules:
+  arrow-body-style: 0
+  no-underscore-dangle: 0
+  class-methods-use-this: 0
+  radix: 0
+  quotes: 0
+  quote-props: 0
+env:
+
+  mocha: true
