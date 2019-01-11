@@ -3,8 +3,8 @@ import * as ActorModel from '../models/ActorModel';
 import * as CharacterModel from '../models/CharacterModel';
 import knex from '../config/db';
 
-export const listMovies = (initialreleaseDate, finalReleaseDate, directorId, actorId) => {
-  return MoviesModel.list(initialreleaseDate, finalReleaseDate, directorId, actorId);
+export const listMovies = (title, initialDate, finalDate, directorId, actorId) => {
+  return MoviesModel.list(title, initialDate, finalDate, directorId, actorId);
 };
 
 export const getMovie = async (id) => {
@@ -49,21 +49,23 @@ export const postFullMovie = async (data) => {
   return knex.transaction((trx) => {
     return MoviesModel.insert(movie).transacting(trx).then(([idMovie]) => {
       const sql = [];
-      characters.forEach((element) => {
-        sql.push(ActorModel.insert(element.actor).transacting(trx).then(([idActor]) => {
-          const character = { name: element.name, idMovie, idActor };
-          console.log('character: ', character);
-          character.teste = 'rwer';
-          return CharacterModel.insert(character).transacting(trx);
-          // return idActor;
-        }));
-      });
-      return Promise.all(sql).then(() => idMovie)
-      .catch((err) => {
-        console.log('deu erro');
-        throw Error(err);
-      });
-    //  trx.commit(idMovie);
+      if (characters) {
+        characters.forEach((element) => {
+          sql.push(ActorModel.insert(element.actor).transacting(trx).then(([idActor]) => {
+            const character = { name: element.name, idMovie, idActor };
+            console.log('character: ', character);
+            return CharacterModel.insert(character).transacting(trx);
+            // return idActor;
+          }));
+        });
+        return Promise.all(sql).then(() => idMovie)
+          .catch((err) => {
+            console.log('deu erro');
+            throw Error(err);
+          });
+      }
+      console.log('vai retornar: ', idMovie);
+      return idMovie;
     });
   });
 };

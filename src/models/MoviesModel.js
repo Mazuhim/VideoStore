@@ -7,30 +7,27 @@ export const insert = (data) => {
   .insert(data);
 };
 
-export const list = async (initialReleaseDate, finalReleaseDate, directorId, actorId) => {
-  console.log('------------------PARAMENTROS DO LIST---------------');
-  console.log('data inicial- ', initialReleaseDate, ' datafinal- ', finalReleaseDate, ' director- ', directorId, ' actor- ', actorId);
+export const list = async (title, initialDate, finalDate, directorId, actorId) => {
   const query = knex
   .from('movie');
-  if (initialReleaseDate) {
-    console.log('if 1');
-    query.where('releaseDate', '>=', initialReleaseDate);
+  if (title) {
+    query.whereRaw('LOWER(title) like ? ', [`%${title.toLowerCase()}%`]);
   }
-  if (finalReleaseDate) {
-    console.log('if 2');
-    query.where('releaseDate', '<=', finalReleaseDate);
+  if (initialDate) {
+    query.where('releaseDate', '>=', initialDate);
+  }
+  if (finalDate) {
+    query.where('releaseDate', '<=', finalDate);
   }
   if (directorId) {
-    console.log('if 3');
     query.where('directorId', directorId);
   }
   if (actorId) {
-    console.log('if 4');
     let idsMovies = await Character.getIdMovieByActorId(actorId);
     idsMovies = idsMovies.map(movie => movie.idMovie);
     query.whereIn('id', idsMovies);
   }
-  return query.orderBy('name');
+  return query.orderBy('title');
 };
 
 export const get = (id) => {

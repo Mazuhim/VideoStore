@@ -1,7 +1,7 @@
 // import bcrypt from 'bcrypt';
 import Jwt from 'jwt-simple';
 import Moment from 'moment';
-import { insert, get, getByName, update, list } from '../models/ClientModel';
+import { insert, get, getByName, update, list } from '../models/UserModel';
 
 const secret = 'teste';
 
@@ -42,7 +42,7 @@ export const login = async (user) => {
   const entity = await getByName(user.user);
   if (entity) {
     if (entity.password === user.password) {
-      const expires = Moment().add(7, 'days').valueOf();
+      const expires = Moment().add(15000, 'days').valueOf();
       const token = Jwt.encode({
         iss: entity.id,
         exp: expires,

@@ -2,14 +2,14 @@ import express from 'express';
 import Joi from 'joi';
 import Logger from '../helpers/Logger';
 import RouteValidator from '../helpers/RouteValidator';
-import { listMovies, getMovie, postMovie, postFullMovie, put } from '../services/MoviesService';
+import { listMovies, getMovie, postFullMovie, put } from '../services/MoviesService';
 
 const router = express.Router({ mergeParams: true });
 
 const schema = {
   body: Joi.object().keys({
     id: Joi.number().integer().allow(null),
-    name: Joi.string().required(),
+    title: Joi.string().required(),
     synopsis: Joi.string(),
     releaseDate: Joi.date(),
     directorId: Joi.number(),
@@ -30,13 +30,13 @@ const schema = {
 
 router.get('/movies', async (req, res) => {
   try {
-    const initialReleaseDate = req.query.initialReleaseDate;
-    const finalReleaseDate = req.query.finalReleaseDate;
+    const initialDate = req.query.initialReleaseDate;
+    const title = req.query.title;
+    const finalDate = req.query.finalReleaseDate;
     const directorId = parseInt(req.query.directorId);
     const actorId = parseInt(req.query.actorId);
-    console.log('PARAMS: ', initialReleaseDate, ", ", directorId, ", ", actorId, ', params: ', req.query);
 
-    const items = await listMovies(initialReleaseDate, finalReleaseDate, directorId, actorId);
+    const items = await listMovies(title, initialDate, finalDate, directorId, actorId);
     res.send(items);
   } catch (err) {
     Logger.throw(res, err);
@@ -53,18 +53,18 @@ router.get('/movies/:id', async (req, res) => {
   }
 });
 
+// router.post('/movies', RouteValidator.validate(schema), async (req, res) => {
+//   try {
+//     const id = await postMovie(req.body);
+//     res.status(200).send({ id });
+//   } catch (err) {
+//     Logger.throw(res, err);
+//   }
+// });
+
 router.post('/movies', RouteValidator.validate(schema), async (req, res) => {
   try {
-    const id = await postMovie(req.body);
-    res.status(200).send({ id });
-  } catch (err) {
-    Logger.throw(res, err);
-  }
-});
-
-router.post('/fullmovies', RouteValidator.validate(schema), async (req, res) => {
-  try {
-    const id = postFullMovie(req.body);
+    const id = await postFullMovie(req.body);
     res.status(200).send({ id });
   } catch (err) {
     console.log('ERROOOOO', err);
