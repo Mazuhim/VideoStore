@@ -15,7 +15,7 @@ const connection = require('knex')({
     timezone: 'UTC',
     // dateStrings: true,
   },
-  pool: { min: process.env.DB_POOL_MIN, max: process.env.DB_POOL_MAX },
+  pool: { min: parseInt(process.env.DB_POOL_MIN), max: parseInt(process.env.DB_POOL_MAX) },
   debug: true,
 });
 

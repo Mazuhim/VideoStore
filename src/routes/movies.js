@@ -14,6 +14,7 @@ const schema = {
     releaseDate: Joi.date(),
     directorId: Joi.number(),
     poster: Joi.string(),
+    amount: Joi.number(),
     characters: Joi.array().items([
       Joi.object().keys({
         name: Joi.string().required(),

@@ -7,6 +7,7 @@ import characterRoutes from './routes/characters';
 import userRoutes from './routes/users';
 import loginRoutes from './routes/login';
 import userMoviesRoutes from './routes/usermovies';
+import rentRoutes from './routes/rent';
 import Logger from './helpers/Logger';
 import jwt from './config/jwt';
 
@@ -31,6 +32,7 @@ app.use('/api-movies/v1/', actorRoutes);
 app.use('/api-movies/v1/', characterRoutes);
 app.use('/api-movies/v1/', userRoutes);
 app.use('/api-movies/v1/', userMoviesRoutes);
+app.use('/api-movies/v1/', rentRoutes);
 
 app.listen(process.env.PORT, () => {
   Logger.info(`Server started on port ${process.env.PORT}`);
