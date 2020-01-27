@@ -26,25 +26,27 @@ export const getAvailable = () => {
     .where('available', '>', 0);
 };
 
-export const getByIdMovie = (idMovie) => {
-  return knex
-    .from('stock')
+export const getByIdMovie = (idMovie, trx) => {
+  return knex('stock')
+    .transacting(trx)
+    .forUpdate()
+    .select('*')
     .where('idMovie', idMovie)
     .then(([rows]) => rows);
 };
 
-export const returnMovie = (id) => {
+export const returnMovie = (idMovie) => {
   return knex
     .from('stock')
     .update('updatedAt', knex.fn.now())
     .increment('available', 1)
-    .where('id', id);
+    .where('idMovie', idMovie);
 };
 
-export const subtractAvailable = (id) => {
+export const subtractAvailable = (idMovie) => {
   return knex
     .from('stock')
-    .where('id', id)
+    .where('idMovie', idMovie)
     .decrement('available', 1)
     .update('updatedAt', knex.fn.now());
 };

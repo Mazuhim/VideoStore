@@ -32,7 +32,7 @@ export const put = (data) => {
 };
 
 export const postFullMovie = async (data) => {
-  const characters = data.characters;
+  const characters = Object.assign({}, data.characters);
   const movie = data;
   let stock = { amount: data.amount, available: data.amount };
 
@@ -50,12 +50,7 @@ export const postFullMovie = async (data) => {
           }));
         });
         stock = Object.assign({ idMovie }, stock);
-        console.log('vai salavar: ', stock);
-        const stockEntity = await StockModel.insert(stock).transacting(trx);
-        console.log('entity: ', stockEntity);
-        console.log('-------------------------------------------------------------');
-        await StockModel.subtractAvailable(3);
-        console.log('-------------------------------------------------------------');
+        await StockModel.insert(stock).transacting(trx);
         return Promise.all(sql).then(() => idMovie)
           .catch((err) => {
             throw Error(err);
