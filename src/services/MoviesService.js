@@ -1,6 +1,7 @@
 import * as MoviesModel from '../models/MoviesModel';
 import * as ActorModel from '../models/ActorModel';
 import * as CharacterModel from '../models/CharacterModel';
+import * as StockModel from '../models/StockModel';
 import knex from '../config/db';
 
 export const listMovies = (title, initialDate, finalDate, directorId, actorId) => {
@@ -33,38 +34,33 @@ export const put = (data) => {
 export const postFullMovie = async (data) => {
   const characters = data.characters;
   const movie = data;
+  let stock = { amount: data.amount, available: data.amount };
 
   delete movie.characters;
-
-  // const idMovie = await MoviesModel.insert(movie).transacting(trx).then(([id]) => id);
-
-  // characters.forEach(async (element) => {
-  //   const idActor = await ActorModel.insert(element.actor);
-  //   const character = { name: element.name, idMovie, idActor };
-  //   const idCharacter = await CharacterModel.insert(character);
-  //   console.log('IDS: ', idMovie, ', ', idActor, ', ', idCharacter);
-  // });
-  // return idMovie;
+  delete movie.amount;
 
   return knex.transaction((trx) => {
-    return MoviesModel.insert(movie).transacting(trx).then(([idMovie]) => {
+    return MoviesModel.insert(movie).transacting(trx).then(async ([idMovie]) => {
       const sql = [];
       if (characters) {
         characters.forEach((element) => {
           sql.push(ActorModel.insert(element.actor).transacting(trx).then(([idActor]) => {
             const character = { name: element.name, idMovie, idActor };
-            console.log('character: ', character);
             return CharacterModel.insert(character).transacting(trx);
-            // return idActor;
           }));
         });
+        stock = Object.assign({ idMovie }, stock);
+        console.log('vai salavar: ', stock);
+        const stockEntity = await StockModel.insert(stock).transacting(trx);
+        console.log('entity: ', stockEntity);
+        console.log('-------------------------------------------------------------');
+        await StockModel.subtractAvailable(3);
+        console.log('-------------------------------------------------------------');
         return Promise.all(sql).then(() => idMovie)
           .catch((err) => {
-            console.log('deu erro');
             throw Error(err);
           });
       }
-      console.log('vai retornar: ', idMovie);
       return idMovie;
     });
   });

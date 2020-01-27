@@ -20,7 +20,6 @@ export const put = (data) => {
 export const listUserMovieByIdUser = async (id, watched) => {
   let userMovies;
   if (isNaN(watched)) {
-    console.log('entrou no if');
     userMovies = await UserMovieModel.getByIdUser(id);
   } else {
     userMovies = await UserMovieModel.getWatched(id, watched);
