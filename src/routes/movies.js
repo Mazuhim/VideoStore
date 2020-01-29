@@ -2,7 +2,9 @@ import express from 'express';
 import Joi from 'joi';
 import Logger from '../helpers/Logger';
 import RouteValidator from '../helpers/RouteValidator';
-import { listMovies, getMovie, postFullMovie, put } from '../services/MoviesService';
+import {
+  listMovies, getMovie, postFullMovie, put,
+} from '../services/MoviesService';
 
 const router = express.Router({ mergeParams: true });
 
@@ -32,7 +34,7 @@ const schema = {
 router.get('/movies', async (req, res) => {
   try {
     const initialDate = req.query.initialReleaseDate;
-    const title = req.query.title;
+    const { title } = req.query;
     const finalDate = req.query.finalReleaseDate;
     const directorId = parseInt(req.query.directorId);
     const actorId = parseInt(req.query.actorId);

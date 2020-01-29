@@ -1,4 +1,6 @@
-import { list, get, insert, update } from '../models/ActorModel';
+import {
+  list, get, insert, update,
+} from '../models/ActorModel';
 
 export const listActors = () => {
   return list();
@@ -13,5 +15,5 @@ export const post = (data) => {
 };
 
 export const put = (data) => {
-  return update(data).then(() => data.id);
+  return update(data);
 };

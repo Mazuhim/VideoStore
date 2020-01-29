@@ -7,7 +7,7 @@ import RouteValidator from '../helpers/RouteValidator';
 const router = express.Router({ mergeParams: true });
 const schema = {
   body: Joi.object().keys({
-    user: Joi.string().required(),
+    email: Joi.string().required(),
     password: Joi.string().required(),
   }),
 };

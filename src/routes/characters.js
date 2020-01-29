@@ -2,7 +2,9 @@ import express from 'express';
 import Joi from 'joi';
 import Logger from '../helpers/Logger';
 import RouteValidator from '../helpers/RouteValidator';
-import { post, listCharacters, getCharacter, put } from '../services/CharacterService';
+import {
+  post, listCharacters, getCharacter, put,
+} from '../services/CharacterService';
 
 const router = express.Router({ mergeParams: true });
 

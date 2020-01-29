@@ -8,8 +8,8 @@ export const insert = (data) => {
 
 export const list = () => {
   return knex
-  .from('actor')
-  .orderBy('name');
+    .from('actor')
+    .orderBy('name');
 };
 
 export const get = (id) => {
@@ -23,6 +23,5 @@ export const update = (data) => {
   return knex
     .from('actor')
     .update(data)
-    .update('updatedAt', knex.fn.now())
     .where('id', data.id);
 };

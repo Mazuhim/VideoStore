@@ -38,7 +38,6 @@ export const getByIdMovie = (idMovie, trx) => {
 export const returnMovie = (idMovie) => {
   return knex
     .from('stock')
-    .update('updatedAt', knex.fn.now())
     .increment('available', 1)
     .where('idMovie', idMovie);
 };
@@ -47,6 +46,5 @@ export const subtractAvailable = (idMovie) => {
   return knex
     .from('stock')
     .where('idMovie', idMovie)
-    .decrement('available', 1)
-    .update('updatedAt', knex.fn.now());
+    .decrement('available', 1);
 };

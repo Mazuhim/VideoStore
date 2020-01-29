@@ -10,12 +10,12 @@ export const list = () => {
 
 export const get = (id) => {
   return knex.from('usermovie').where('id', id)
-  .then(([rows]) => rows);
+    .then(([rows]) => rows);
 };
 
 export const getByIdMovie = (idMovie) => {
   return knex.from('usermovie').where('idMovie', idMovie)
-  .then(([rows]) => rows);
+    .then(([rows]) => rows);
 };
 
 export const getByIdUser = (idUser) => {
@@ -24,13 +24,13 @@ export const getByIdUser = (idUser) => {
 
 export const getWatched = (idUser, watched) => {
   return knex.from('usermovie')
-  .where('idUser', idUser)
-  .where('watched', watched);
+    .where('idUser', idUser)
+    .where('watched', watched);
 };
 
 export const update = (data) => {
   const query = knex.from('usermovie')
-  .update(data)
-  .where('id', data.id);
+    .update(data)
+    .where('id', data.id);
   return query;
 };

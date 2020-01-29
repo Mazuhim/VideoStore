@@ -1,6 +1,8 @@
 import express from 'express';
 import Joi from 'joi';
-import { listActors, getActor, post, put } from '../services/ActorService';
+import {
+  listActors, getActor, post, put,
+} from '../services/ActorService';
 import Logger from '../helpers/Logger';
 import RouteValidator from '../helpers/RouteValidator';
 
@@ -17,7 +19,7 @@ const schema = {
 
 router.get('/actors', async (req, res) => {
   try {
-    const items = await listActors(req.merchantId);
+    const items = await listActors();
     res.send(items);
   } catch (err) {
     Logger.throw(res, err);
@@ -44,9 +46,8 @@ router.post('/actors', RouteValidator.validate(schema), async (req, res) => {
 
 router.put('/actors/:id', RouteValidator.validate(schema), async (req, res) => {
   try {
-    req.body.merchantId = req.merchantId;
     req.body.id = req.params.id;
-    const id = await put(req.body);
+    const [id] = await put(req.body);
     res.send({ id });
   } catch (err) {
     Logger.throw(res, err);

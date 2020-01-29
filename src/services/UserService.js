@@ -1,7 +1,9 @@
 // import bcrypt from 'bcrypt';
 import Jwt from 'jwt-simple';
 import Moment from 'moment';
-import { insert, get, getByName, update, list } from '../models/UserModel';
+import {
+  insert, get, getByEmail, update, list,
+} from '../models/UserModel';
 
 const secret = 'teste';
 
@@ -13,8 +15,8 @@ export const getUser = (id) => {
   return get(id);
 };
 
-export const getUserByName = (name) => {
-  return getByName(name);
+export const getUserByEmail = (email) => {
+  return getByEmail(email);
 };
 
 export const post = (data) => {
@@ -39,7 +41,7 @@ export const put = (data) => {
 };
 
 export const login = async (user) => {
-  const entity = await getByName(user.user);
+  const entity = await getByEmail(user.email);
   if (entity) {
     if (entity.password === user.password) {
       const expires = Moment().add(15000, 'days').valueOf();

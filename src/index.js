@@ -11,7 +11,26 @@ import rentRoutes from './routes/rent';
 import Logger from './helpers/Logger';
 import jwt from './config/jwt';
 
+const knex = require("knex");
+
+const knexFile = require("../knexfile");
+
+
 require('dotenv').config();
+
+const database = knex(knexFile);
+
+if (process.env.NODE_ENV === "development") {
+  database.on("query", (query) => {
+    let { sql } = query;
+    if (query.bindings) {
+      query.bindings.forEach((binding) => {
+        sql = sql.replace("?", binding);
+      });
+    }
+    console.log(sql);
+  });
+}
 
 const app = express();
 app.use(helmet());
