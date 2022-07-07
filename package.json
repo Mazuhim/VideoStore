@@ -32,7 +32,7 @@
     "jwt-simple": "^0.5.5",
     "knex": "^0.15.2",
     "lodash": "^4.17.4",
-    "moment": "^2.23.0",
+    "moment": "^2.29.4",
     "moment-timezone": "^0.5.11",
     "mysql2": "^1.1.2",
     "node-fetch": "^2.3.0",
